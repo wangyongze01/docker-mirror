@@ -1,0 +1,20 @@
+name: Save CrowdSec Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull amd64 image
+        run: docker pull --platform linux/amd64 crowdsecurity/crowdsec:v1.7.7
+
+      - name: Save image
+        run: docker save crowdsecurity/crowdsec:v1.7.7 | gzip > crowdsec-v1.7.7-amd64.tar.gz
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: crowdsec-v1.7.7-amd64
+          path: crowdsec-v1.7.7-amd64.tar.gz
