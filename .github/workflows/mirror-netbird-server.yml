@@ -1,0 +1,20 @@
+name: Save Server Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull amd64 image
+        run: docker pull --platform linux/amd64 netbirdio/netbird-server:latest
+
+      - name: Save image
+        run: docker save netbirdio/netbird-server:latest | gzip > netbirdio-netbird-server-latest-amd64.tar.gz
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: netbirdio-netbird-server-latest-amd64
+          path: netbirdio-netbird-server-latest-amd64.tar.gz
