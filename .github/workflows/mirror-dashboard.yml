@@ -1,0 +1,20 @@
+name: Save Dashboard Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull amd64 image
+        run: docker pull --platform linux/amd64 netbirdio/dashboard:latest  
+
+      - name: Save image
+        run: docker save netbirdio/dashboard:latest   | gzip > netbirdio-dashboard-latest-amd64.tar.gz
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: netbirdio-dashboard-latest-amd64
+          path: netbirdio-dashboard-latest-amd64.tar.gz
